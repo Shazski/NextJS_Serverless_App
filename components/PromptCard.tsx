@@ -2,10 +2,16 @@
 
 import { useState } from 'react'
 import Image from "next/image"
-// import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 const PromptCard = ({ key, post, handleTagClick, handleEdit, handleDelete }: { key: string, post: any, handleTagClick: any, handleEdit?: any, handleDelete?: any }) => {
   const [copied, setCopied] = useState<string>("")
+
+  const handleCopy = () => {
+    setCopied(post.prompt)
+    navigator.clipboard.writeText(post.prompt)
+    setTimeout(() => setCopied(""), 3000)
+  }
   return (
     <div className='prompt_card'>
       <div className="flex justify-between items-start gap-5">
@@ -15,7 +21,7 @@ const PromptCard = ({ key, post, handleTagClick, handleEdit, handleDelete }: { k
             <h3 className='font-satoshi font-semibold text-gray-900'>{post?.creator?.username}</h3>
             <p className='font-inter text-sm text-gray-500'>{post.creator.email}</p>
           </div>
-          <div className='copy_btn' onClick={() => { }}>
+          <div className='copy_btn' onClick={() => handleCopy()}>
             <Image alt="copy" src={ copied == post.prompt ? '/assets/icons/tick.svg': '/assets/icons/copy.svg'} width={12} height={12}></Image>
           </div>
         </div>
